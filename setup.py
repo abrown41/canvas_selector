@@ -34,14 +34,14 @@ with open(path.join(here, 'requirements.txt')) as requirements_file:
 
 
 setup(
-    name='canvaslib',
+    name='canvas_selector',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description="Python package for interacting with canvas",
+    description="Python package for selecting objects from the canvasapi",
     long_description=readme,
     author="Andrew Brown",
     author_email='andrew.brown@qub.ac.uk',
-    url='https://github.com/abrown41/canvaslib',
+    url='https://github.com/abrown41/canvas_selector',
     python_requires='>={}'.format('.'.join(str(n) for n in min_version)),
     packages=find_packages(exclude=['docs', 'tests']),
     include_package_data=False,

@@ -14,8 +14,8 @@ class options(Namespace):
                  assignment=None,
                  groups=None):
         super().__init__()
-        self.semester = semester
         self.course = course
+        self.semester = semester
         self.assignment = assignment
         self.groups = groups
 
@@ -27,16 +27,25 @@ def choose_options(args):
     else:
         args.course = canvas.get_course(args.course)
 
-    if args.groups:
-        args.groupid = choose_one(args.course.get_group_categories())
+    try:
+        if args.groups:
+            args.group = choose_one(args.course.get_group_categories())
+    except AttributeError:
+        args.group = None
+        pass
 
-    if args.assignment:
-        asses = args.course.get_assignments(include="assignment")
-        asses = choose_many(asses, obj="assignment")
-        args.asses = [args.course.get_assignment(x)
-                      for x in asses]
+    try:
+        if args.assignment:
+            asses = args.course.get_assignments(include="assignment")
+            asses = choose_many(asses, obj="assignment")
+            args.asses = [args.course.get_assignment(x)
+                          for x in asses]
+    except AttributeError:
+        args.asses = []
+        pass
 
     return args
+
 
 def select_course(courseList, enrollment_term_id=None):
 
@@ -118,12 +127,13 @@ def get_submissions(ass):
     for sub in tqdm(ungraded, desc=f"Downloading {ass.name}", ascii=True):
         download_submission(sub)
 
+    return ungraded
+
 
 def update_grade(sub, newgrade):
     sub.edit(submission={'posted_grade': str(newgrade)})
 
 
 if __name__ == '__main__':
-    #  args = read_command_line()
-    args = options(semester='2241_SPR', groups=True)
+    args = options()
     choose_options(args)
