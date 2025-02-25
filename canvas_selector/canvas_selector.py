@@ -1,5 +1,5 @@
 from canvasapi import Canvas
-from load_config import API_KEY, API_URL
+from .load_config import API_KEY, API_URL
 from tqdm import tqdm
 from argparse import Namespace
 
