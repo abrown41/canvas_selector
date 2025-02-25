@@ -1,6 +1,6 @@
-=============
+===============
 canvas_selector
-=============
+===============
 
 Python package for selecting objects from the canvasapi
 
