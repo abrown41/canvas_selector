@@ -22,14 +22,14 @@ class options(Namespace):
 
 def choose_options(args):
     if not args.course:
-        args.course = select_course(canvas.get_courses(state='available'),
+        args.course = _select_course(canvas.get_courses(state='available'),
                                     enrollment_term_id=args.semester)
     else:
         args.course = canvas.get_course(args.course)
 
     try:
         if args.groups:
-            args.group = choose_one(args.course.get_group_categories())
+            args.group = _choose_one(args.course.get_group_categories())
     except AttributeError:
         args.group = None
         pass
@@ -37,7 +37,7 @@ def choose_options(args):
     try:
         if args.assignment:
             asses = args.course.get_assignments(include="assignment")
-            asses = choose_many(asses, obj="assignment")
+            asses = _choose_many(asses, obj="assignment")
             args.asses = [args.course.get_assignment(x)
                           for x in asses]
     except AttributeError:
@@ -47,7 +47,7 @@ def choose_options(args):
     return args
 
 
-def select_course(courseList, enrollment_term_id=None):
+def _select_course(courseList, enrollment_term_id=None):
 
     if enrollment_term_id:
         courses = [course for course in courseList
@@ -55,12 +55,12 @@ def select_course(courseList, enrollment_term_id=None):
     else:
         courses = courseList
 
-    answers = choose_one(courses, obj="course")
+    answers = _choose_one(courses, obj="course")
 
     return answers
 
 
-def choose_many(pagList, obj="course"):
+def _choose_many(pagList, obj="course"):
     from inquirer import Checkbox, prompt
 
     questions = [Checkbox(obj, message=f" Which {obj} do you want to use? \
@@ -73,7 +73,7 @@ def choose_many(pagList, obj="course"):
     return answers[obj]
 
 
-def choose_one(pagList, obj="course"):
+def _choose_one(pagList, obj="course"):
     from inquirer import List, prompt
 
     questions = [List(obj, message=f" Which {obj} do you want to use? \
@@ -100,7 +100,7 @@ def nameFile(sub):
     return f"{sub.assignment_id}/u{sub.user_id}_{fname}"
 
 
-def download_submission(sub, suffix=None):
+def _download_submission(sub, suffix=None):
 
     if len(sub.attachments) > 0:
         mkdir(sub.assignment_id)
@@ -125,7 +125,7 @@ def get_submissions(ass):
     ungraded = [sub for sub in subs if len(sub.attachments) > 0 and
                 (sub.grade == "0" or sub.grade is None)]
     for sub in tqdm(ungraded, desc=f"Downloading {ass.name}", ascii=True):
-        download_submission(sub)
+        _download_submission(sub)
 
     return ungraded
 
