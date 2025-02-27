@@ -118,12 +118,13 @@ def cleanup(ass):
     shutil.rmtree(str(ass.id))
 
 
-def get_submissions(ass):
+def get_submissions(ass, ungraded_only=True):
 
     subs = ass.get_submissions()
 
     ungraded = [sub for sub in subs if len(sub.attachments) > 0 and
-                (sub.grade == "0" or sub.grade is None)]
+                ((sub.grade == "0" or sub.grade is None) or 
+                (not ungraded_only))]
     for sub in tqdm(ungraded, desc=f"Downloading {ass.name}", ascii=True):
         _download_submission(sub)
 
