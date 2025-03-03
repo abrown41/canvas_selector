@@ -61,7 +61,8 @@ def _select_course(courseList, enrollment_term_id=None):
 
 
 def _choose_many(pagList, obj="course"):
-    from inquirer import Checkbox, prompt
+    from inquirer import Checkbox
+    import sys
 
     questions = [Checkbox(obj, message=f" Which {obj} do you want to use? \
 (<up>/<down> to navigate, \
@@ -70,11 +71,15 @@ def _choose_many(pagList, obj="course"):
 
     answers = prompt(questions)
 
-    return answers[obj]
+    if answers:
+        return answers[obj]
+    else:
+        sys.exit(0)
 
 
 def _choose_one(pagList, obj="course"):
     from inquirer import List, prompt
+    import sys
 
     questions = [List(obj, message=f" Which {obj} do you want to use? \
 (<up>/<down> to navigate, \
@@ -83,7 +88,10 @@ def _choose_one(pagList, obj="course"):
 
     answers = prompt(questions)
 
-    return answers[obj]
+    if answers:
+        return answers[obj]
+    else:
+        sys.exit(0)
 
 
 def mkdir(ass_id):
