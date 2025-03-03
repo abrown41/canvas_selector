@@ -61,7 +61,7 @@ def _select_course(courseList, enrollment_term_id=None):
 
 
 def _choose_many(pagList, obj="course"):
-    from inquirer import Checkbox
+    from inquirer import Checkbox, prompt
     import sys
 
     questions = [Checkbox(obj, message=f" Which {obj} do you want to use? \
