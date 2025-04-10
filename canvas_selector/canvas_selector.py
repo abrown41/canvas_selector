@@ -109,6 +109,7 @@ def nameFile(sub):
 
 
 def _download_submission(sub, suffix=None):
+    import urllib.request
 
     if len(sub.attachments) > 0:
         mkdir(sub.assignment_id)
@@ -116,9 +117,9 @@ def _download_submission(sub, suffix=None):
         downname = nameFile(sub)
         if suffix:
             if downname.endswith(suffix):
-                thefile.download(downname)
+                urllib.request.urlretrieve(thefile.url, downname)
         else:
-            thefile.download(downname)
+            urllib.request.urlretrieve(thefile.url, downname)
 
 
 def cleanup(ass_id):
