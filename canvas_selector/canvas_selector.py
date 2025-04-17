@@ -124,7 +124,7 @@ def _download_submission(sub, suffix=None):
 
 def cleanup(ass_id):
     import shutil
-    shutil.rmtree(str(ass_id))
+    shutil.rmtree(str(ass_id), ignore_errors=True)
 
 
 def get_submissions(ass, ungraded_only=True):
